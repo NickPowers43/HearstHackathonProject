@@ -66,44 +66,26 @@ public class Main : MonoBehaviour {
                 {
                     GameObject hudDiagnosticsButton = GameObject.Find("HUD-Diagnostics");
                     GameObject investButton = GameObject.Find("HUD-InvestReport");
+
+                    if ((indexPoint.transform.position - hudDiagnosticsButton.transform.position).magnitude < 0.012f)
+                    {
+                        hudTitle.text = "Diagnosis";
+                        hudText.text = "Location:  {lat: 40.708888, long: -73.986944}\nHealth:  65\nIssue: Potholes\nTraffic: heavy\nGenerated Revenue: $100k\nInvestment: $80\nLast Diagnose: 2015-09-25T09:18:33-04:00\nLast Service:  2015-10-25T09:18:33-04:00\nLast Investment: $10\n";
+                        hudDiagnosticsButton.SetActive(false);
+                        investButton.SetActive(false);
+
+                        state = MenuState.Diagnostics;
+                    }
+                    else if ((indexPoint.transform.position - investButton.transform.position).magnitude < 0.012f)
+                    {
+                        hudTitle.text = "Invest/Report";
+                        hudText.text = "You invested $35.0 to fix\nthe road!";
+                        hudDiagnosticsButton.SetActive(false);
+                        investButton.SetActive(false);
+
+                        state = MenuState.Invest;
+                    }
                     
-                    Vector3 transitionButtonPos;
-                    if (state == MenuState.Command)
-                    {
-                        transitionButtonPos = hudDiagnosticsButton.transform.position;
-                    }
-                    else
-                    {
-                        transitionButtonPos = investButton.transform.position;
-                    }
-
-                    if ((indexPoint.transform.position - transitionButtonPos).magnitude < 0.012f)
-                    {
-                        if (state == MenuState.Command)
-                        {
-                            hudTitle.text = "Diagnosis";
-                            hudText.text = "Location:  {lat: 40.708888, long: -73.986944}\nHealth:  65\nIssue: Potholes\nTraffic: heavy\nGenerated Revenue: $100k\nInvestment: $80\nLast Diagnose: 2015-09-25T09:18:33-04:00\nLast Service:  2015-10-25T09:18:33-04:00\nLast Investment: $10\n";
-                            hudDiagnosticsButton.SetActive(false);
-                            if (investButton != null)
-                            {
-                                investButton.SetActive(true);
-                            }
-                            else
-                            {
-                                Debug.Log("investButton is null");
-                            }
-                            
-                            state = MenuState.Diagnostics;
-                        }
-                        else if (state == MenuState.Diagnostics)
-                        {
-                            hudTitle.text = "Invest/Report";
-                            hudText.text = "You invested $35.0 to fix\nthe road!";
-                            investButton.SetActive(false);
-
-                            state = MenuState.Invest;
-                        }
-                    }
                 }
                 
             }
